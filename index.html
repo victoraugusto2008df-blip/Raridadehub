@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Raridade Hub — Soluções Digitais</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #08080f;
+    --surface: #0d0d1a;
+    --surface2: #12121f;
+    --blue: #7dd3fc;
+    --blue-dim: #38bdf8;
+    --blue-glow: rgba(125, 211, 252, 0.15);
+    --blue-glow-strong: rgba(125, 211, 252, 0.25);
+    --text: #e2e8f0;
+    --text-muted: #64748b;
+    --border: rgba(125, 211, 252, 0.1);
+    --border-hover: rgba(125, 211, 252, 0.35);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 3rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(8,8,15,0.88);
+    backdrop-filter: blur(14px);
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--blue);
+    box-shadow: 0 0 10px var(--blue), 0 0 20px rgba(125,211,252,0.4);
+    animation: pulse 2.5s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--blue), 0 0 16px rgba(125,211,252,0.4); }
+    50%       { opacity: 0.6; box-shadow: 0 0 4px var(--blue), 0 0 8px rgba(125,211,252,0.2); }
+  }
+
+  nav ul { list-style: none; display: flex; gap: 2rem; }
+  nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--blue); }
+
+  .nav-cta {
+    background: transparent;
+    border: 1px solid var(--border-hover);
+    color: var(--blue);
+    padding: 0.45rem 1.1rem;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .nav-cta:hover {
+    background: var(--blue-glow);
+    box-shadow: 0 0 12px rgba(125,211,252,0.2);
+    color: var(--blue);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 6rem 3rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse at center, rgba(125,211,252,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--blue);
+    border: 1px solid var(--border-hover);
+    padding: 0.3rem 0.85rem;
+    border-radius: 20px;
+    margin-bottom: 2rem;
+  }
+
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero h1 span { color: var(--blue); }
+
+  .hero p {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.8;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── BUTTONS ── */
+  .btn-primary {
+    background: var(--blue);
+    color: #080810;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.75rem 1.8rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    transition: box-shadow 0.2s, transform 0.15s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 20px rgba(125,211,252,0.45);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 0.875rem;
+    padding: 0.75rem 1.8rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.12);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-ghost:hover {
+    border-color: rgba(255,255,255,0.3);
+    color: #fff;
+  }
+
+
+
+  /* ── SECTION HELPERS ── */
+  .section-tag {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-sub {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    max-width: 420px;
+    margin: 0 auto 3rem;
+    line-height: 1.7;
+  }
+
+  /* ── PLANOS ── */
+  .plans {
+    padding: 5rem 3rem;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .plan-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem 1.75rem;
+    position: relative;
+    transition: border-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    overflow: hidden;
+  }
+
+  .plan-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blue), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .plan-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(125,211,252,0.1);
+  }
+
+  .plan-card:hover::before { opacity: 1; }
+
+  .plan-card.featured {
+    border-color: rgba(125,211,252,0.4);
+    box-shadow: 0 0 30px rgba(125,211,252,0.08);
+  }
+
+  .plan-card.featured::before { opacity: 1; }
+
+  .plan-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--blue-glow-strong);
+    color: var(--blue);
+    border: 1px solid rgba(125,211,252,0.3);
+    padding: 0.2rem 0.65rem;
+    border-radius: 20px;
+    margin-bottom: 1.25rem;
+  }
+
+  .plan-name {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .plan-price {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .plan-price span {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    letter-spacing: 0;
+  }
+
+  .plan-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 1rem 0 1.5rem;
+    line-height: 1.6;
+  }
+
+  .plan-divider {
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 1.25rem;
+  }
+
+  .plan-features { list-style: none; }
+
+  .plan-features li {
+    font-size: 13px;
+    color: var(--text);
+    padding: 0.4rem 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .plan-features li::before {
+    content: '';
+    width: 16px; height: 16px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--blue-glow);
+    border: 1px solid rgba(125,211,252,0.3);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%237dd3fc' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 9px;
+  }
+
+  .plan-btn {
+    width: 100%;
+    margin-top: 1.75rem;
+    padding: 0.7rem;
+    border-radius: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+  }
+
+  .plan-btn-outline {
+    background: transparent;
+    border: 1px solid var(--border-hover);
+    color: var(--blue);
+  }
+  .plan-btn-outline:hover {
+    background: var(--blue-glow);
+    box-shadow: 0 0 12px rgba(125,211,252,0.2);
+    color: var(--blue);
+  }
+
+  .plan-btn-solid {
+    background: var(--blue);
+    border: none;
+    color: #080810;
+  }
+  .plan-btn-solid:hover {
+    box-shadow: 0 0 20px rgba(125,211,252,0.4);
+    transform: translateY(-1px);
+    color: #080810;
+  }
+
+  /* ── DIFERENCIAIS ── */
+  .features-section {
+    padding: 5rem 3rem;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+
+  .feature-item {
+    padding: 1.5rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+
+  .feature-item:hover {
+    border-color: rgba(125,211,252,0.25);
+    box-shadow: 0 4px 20px rgba(125,211,252,0.06);
+  }
+
+  .feature-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: var(--blue-glow);
+    border: 1px solid rgba(125,211,252,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-size: 16px;
+    color: var(--blue);
+  }
+
+  .feature-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #fff;
+    margin-bottom: 0.4rem;
+  }
+
+  .feature-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ── CONTATO ── */
+  .contact-section {
+    padding: 5rem 3rem;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .contact-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  .contact-info h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+
+  .contact-info p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0.75rem;
+  }
+
+  .contact-item-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--blue-glow);
+    border: 1px solid rgba(125,211,252,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .contact-item-text {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .contact-item-text strong {
+    display: block;
+    color: var(--text);
+    font-weight: 500;
+    font-size: 13px;
+  }
+
+  /* WhatsApp CTA */
+  .wa-cta {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .wa-icon {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: rgba(37,211,102,0.12);
+    border: 1px solid rgba(37,211,102,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 24px;
+  }
+
+  .wa-cta h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.4rem;
+  }
+
+  .wa-cta p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    line-height: 1.5;
+  }
+
+  .btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #25d366;
+    color: #fff;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: box-shadow 0.2s, transform 0.15s;
+  }
+  .btn-whatsapp:hover {
+    box-shadow: 0 0 20px rgba(37,211,102,0.35);
+    transform: translateY(-1px);
+    color: #fff;
+  }
+
+  .wa-number {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 0.75rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── CTA FINAL ── */
+  .cta-section {
+    padding: 6rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 500px; height: 300px;
+    background: radial-gradient(ellipse at center, rgba(125,211,252,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-section h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: #fff;
+    margin-bottom: 1rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-section p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 2rem 3rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  footer p { font-size: 12px; color: var(--text-muted); }
+  footer a { color: var(--text-muted); text-decoration: none; font-size: 12px; transition: color 0.2s; }
+  footer a:hover { color: var(--blue); }
+  footer ul { list-style: none; display: flex; gap: 1.5rem; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; }
+    nav ul { display: none; }
+    .hero { padding: 4rem 1.5rem 3rem; }
+    .plans { padding: 4rem 1.5rem; }
+    .features-section { padding: 4rem 1.5rem; }
+    .contact-section { padding: 4rem 1.5rem; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .cta-section { padding: 4rem 1.5rem; }
+    footer { flex-direction: column; text-align: center; padding: 1.5rem; }
+  }
+
+  /* ── MANIFESTO ── */
+  .manifesto {
+    padding: 4rem 3rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .manifesto-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .manifesto-quote {
+    position: relative;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--blue);
+  }
+
+  .manifesto-aspas {
+    font-family: Georgia, serif;
+    font-size: 5rem;
+    color: var(--blue);
+    opacity: 0.25;
+    line-height: 0.5;
+    margin-bottom: 1rem;
+    user-select: none;
+  }
+
+  .manifesto-quote p {
+    font-size: 1rem;
+    color: var(--text);
+    line-height: 1.8;
+    font-style: italic;
+  }
+
+  .manifesto-brand {
+    margin-top: 1rem;
+    font-family: Space Grotesk, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--blue);
+    text-transform: uppercase;
+  }
+
+  .manifesto-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .pillar {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 1rem 1.25rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: border-color 0.2s;
+  }
+
+  .pillar:hover { border-color: rgba(125,211,252,0.3); }
+
+  .pillar-icon {
+    font-size: 18px;
+    color: var(--blue);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .pillar-text strong {
+    display: block;
+    font-family: Space Grotesk, sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+
+  .pillar-text span {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 768px) {
+    .manifesto { padding: 3rem 1.5rem; }
+    .manifesto-inner { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+
+  /* ── SPLASH SCREEN ── */
+  #splash {
+    position: fixed;
+    inset: 0;
+    background: #08080f;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Grade de fundo sutil */
+  #splash::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(125,211,252,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(125,211,252,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  /* Glow central no fundo */
+  #splash::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(ellipse at center, rgba(125,211,252,0.07) 0%, transparent 65%);
+    pointer-events: none;
+    animation: splashGlowBreath 3s ease-in-out infinite;
+  }
+
+  @keyframes splashGlowBreath {
+    0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+    50%       { opacity: 1;   transform: translate(-50%, -50%) scale(1.15); }
+  }
+
+  #splash.hide {
+    animation: splashExit 0.8s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  }
+
+  @keyframes splashExit {
+    0%   { opacity: 1; clip-path: inset(0 0 0 0); }
+    100% { opacity: 0; clip-path: inset(0 0 100% 0); }
+  }
+
+  /* ── LOGO WRAP ── */
+  .splash-logo-wrap {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    opacity: 0;
+    animation: splashLogoIn 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+  }
+
+  @keyframes splashLogoIn {
+    0%   { opacity: 0; transform: translateY(24px) scale(0.96); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ── ÍCONE CENTRAL ── */
+  .splash-icon {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Anéis orbitais */
+  .splash-orbit {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(125,211,252,0.12);
+  }
+
+  .splash-orbit-1 {
+    width: 120px; height: 120px;
+    animation: orbitSpin 8s linear infinite;
+    border-top-color: rgba(125,211,252,0.5);
+    border-right-color: rgba(125,211,252,0.2);
+  }
+
+  .splash-orbit-2 {
+    width: 90px; height: 90px;
+    animation: orbitSpin 5s linear infinite reverse;
+    border-bottom-color: rgba(125,211,252,0.4);
+    border-left-color: rgba(125,211,252,0.15);
+  }
+
+  .splash-orbit-3 {
+    width: 60px; height: 60px;
+    border-color: rgba(125,211,252,0.08);
+    animation: orbitSpin 12s linear infinite;
+    border-right-color: rgba(125,211,252,0.3);
+  }
+
+  @keyframes orbitSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* Ponto central */
+  .splash-core {
+    position: relative;
+    z-index: 2;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #7dd3fc;
+    box-shadow:
+      0 0 0 6px rgba(125,211,252,0.1),
+      0 0 0 14px rgba(125,211,252,0.05),
+      0 0 30px rgba(125,211,252,0.8),
+      0 0 60px rgba(125,211,252,0.4),
+      0 0 100px rgba(125,211,252,0.2);
+    animation: corePulse 2s ease-in-out infinite;
+  }
+
+  @keyframes corePulse {
+    0%, 100% {
+      box-shadow: 0 0 0 6px rgba(125,211,252,0.1), 0 0 0 14px rgba(125,211,252,0.05),
+                  0 0 30px rgba(125,211,252,0.8), 0 0 60px rgba(125,211,252,0.4), 0 0 100px rgba(125,211,252,0.2);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(125,211,252,0.15), 0 0 0 20px rgba(125,211,252,0.06),
+                  0 0 40px rgba(125,211,252,1), 0 0 80px rgba(125,211,252,0.5), 0 0 120px rgba(125,211,252,0.3);
+      transform: scale(1.1);
+    }
+  }
+
+  /* Partículas orbitando */
+  .splash-particle {
+    position: absolute;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: #7dd3fc;
+    box-shadow: 0 0 6px #7dd3fc;
+  }
+
+  .splash-particle-1 {
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    animation: particleOrbit1 8s linear infinite;
+    transform-origin: 0px 60px;
+  }
+
+  .splash-particle-2 {
+    top: 50%; right: 0;
+    transform: translateY(-50%);
+    animation: particleOrbit2 5s linear infinite reverse;
+    transform-origin: -45px 0px;
+  }
+
+  .splash-particle-3 {
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    animation: particleOrbit3 12s linear infinite;
+    transform-origin: 0px -60px;
+    width: 3px; height: 3px;
+    opacity: 0.6;
+  }
+
+  @keyframes particleOrbit1 { from { transform: translateX(-50%) rotate(0deg)   translateY(-60px); } to { transform: translateX(-50%) rotate(360deg)  translateY(-60px); } }
+  @keyframes particleOrbit2 { from { transform: translateY(-50%) rotate(0deg)   translateX(-45px); } to { transform: translateY(-50%) rotate(360deg)  translateX(-45px); } }
+  @keyframes particleOrbit3 { from { transform: translateX(-50%) rotate(0deg)   translateY(60px);  } to { transform: translateX(-50%) rotate(-360deg) translateY(60px);  } }
+
+  /* ── TEXTO ── */
+  .splash-name {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .splash-name span { color: #7dd3fc; }
+
+  .splash-tagline {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(125,211,252,0.55);
+    opacity: 0;
+    animation: splashTagIn 0.6s ease 1s forwards;
+    margin-top: -0.75rem;
+  }
+
+  @keyframes splashTagIn {
+    0%   { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── BARRA DE PROGRESSO ── */
+  .splash-bar-wrap {
+    position: absolute;
+    bottom: 3.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    z-index: 2;
+    opacity: 0;
+    animation: splashTagIn 0.5s ease 1.1s forwards;
+  }
+
+  .splash-bar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .splash-bar-label {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: rgba(125,211,252,0.35);
+    text-transform: uppercase;
+  }
+
+  .splash-bar-pct {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(125,211,252,0.5);
+  }
+
+  .splash-bar-track {
+    width: 100%;
+    height: 2px;
+    background: rgba(125,211,252,0.08);
+    border-radius: 2px;
+    overflow: visible;
+    position: relative;
+  }
+
+  .splash-bar-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, rgba(125,211,252,0.3), #7dd3fc);
+    position: relative;
+    animation: splashBarFill 1.8s cubic-bezier(0.4, 0, 0.2, 1) 1.2s forwards;
+    box-shadow: 0 0 8px rgba(125,211,252,0.6);
+  }
+
+  /* Bolinha na ponta da barra */
+  .splash-bar-fill::after {
+    content: '';
+    position: absolute;
+    right: -3px; top: 50%;
+    transform: translateY(-50%);
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #7dd3fc;
+    box-shadow: 0 0 8px #7dd3fc, 0 0 16px rgba(125,211,252,0.5);
+  }
+
+  @keyframes splashBarFill {
+    0%   { width: 0%; }
+    100% { width: 100%; }
+  }
+
+  /* Linha decorativa no topo */
+  .splash-line-top {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(125,211,252,0.4), transparent);
+    opacity: 0;
+    animation: splashTagIn 0.5s ease 0.1s forwards;
+  }
+
+  /* Cantos decorativos */
+  .splash-corner {
+    position: absolute;
+    width: 20px; height: 20px;
+    opacity: 0;
+    animation: splashTagIn 0.5s ease 0.4s forwards;
+  }
+
+  .splash-corner::before,
+  .splash-corner::after {
+    content: '';
+    position: absolute;
+    background: rgba(125,211,252,0.4);
+  }
+
+  .splash-corner::before { width: 100%; height: 1px; top: 0; left: 0; }
+  .splash-corner::after  { width: 1px; height: 100%; top: 0; left: 0; }
+
+  .splash-corner-tl { top: 1.5rem; left: 1.5rem; }
+  .splash-corner-tr { top: 1.5rem; right: 1.5rem; transform: scaleX(-1); }
+  .splash-corner-bl { bottom: 1.5rem; left: 1.5rem; transform: scaleY(-1); }
+  .splash-corner-br { bottom: 1.5rem; right: 1.5rem; transform: scale(-1); }
+
+    /* ── ANIMAÇÕES DE ENTRADA DO CONTEÚDO ── */
+  body.loaded nav {
+    animation: fadeSlideDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  body.loaded .hero {
+    animation: fadeSlideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+  }
+
+  body.loaded .manifesto {
+    animation: fadeSlideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+  }
+
+  @keyframes fadeSlideDown {
+    0%   { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeSlideUp {
+    0%   { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Esconde o conteúdo até a splash sumir */
+  body:not(.loaded) nav,
+  body:not(.loaded) .hero,
+  body:not(.loaded) .manifesto {
+    opacity: 0;
+  }
+
+  /* Scroll reveal para seções abaixo */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1), transform 0.65s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<!-- ── SPLASH SCREEN ── -->
+<div id="splash">
+  <!-- Linha superior -->
+  <div class="splash-line-top"></div>
+
+  <!-- Cantos decorativos -->
+  <div class="splash-corner splash-corner-tl"></div>
+  <div class="splash-corner splash-corner-tr"></div>
+  <div class="splash-corner splash-corner-bl"></div>
+  <div class="splash-corner splash-corner-br"></div>
+
+  <!-- Logo e ícone -->
+  <div class="splash-logo-wrap">
+    <div class="splash-icon">
+      <div class="splash-orbit splash-orbit-1"></div>
+      <div class="splash-orbit splash-orbit-2"></div>
+      <div class="splash-orbit splash-orbit-3"></div>
+      <div class="splash-particle splash-particle-1"></div>
+      <div class="splash-particle splash-particle-2"></div>
+      <div class="splash-particle splash-particle-3"></div>
+      <div class="splash-core"></div>
+    </div>
+    <div class="splash-name">Raridade<span>Hub</span></div>
+    <div class="splash-tagline">Pequenas empresas · Grandes negócios</div>
+  </div>
+
+  <!-- Barra de progresso -->
+  <div class="splash-bar-wrap">
+    <div class="splash-bar-header">
+      <span class="splash-bar-label">Inicializando</span>
+      <span class="splash-bar-pct" id="splashPct">0%</span>
+    </div>
+    <div class="splash-bar-track">
+      <div class="splash-bar-fill" id="splashFill"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-dot"></div>
+    Raridade Hub
+  </a>
+  <ul>
+    <li><a href="#solucoes">Soluções</a></li>
+    <li><a href="#planos">Planos</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <a href="https://wa.me/5561998041680" target="_blank" class="nav-cta">Falar agora</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-label">Pequenas empresas · Grandes negócios</div>
+  <h1>O digital que a sua<br/>empresa merecia<br/><span>desde o início.</span></h1>
+  <p>A Raridade Hub nasceu para mudar o jogo das pequenas empresas. Conectamos quem tem potencial com as ferramentas, estratégias e pessoas certas para crescer de verdade no mercado digital — sem precisar ser grande para começar.</p>
+  <div class="hero-btns">
+    <a href="#planos" class="btn-primary">Conhecer planos</a>
+    <a href="https://wa.me/5561998041680" target="_blank" class="btn-ghost">Falar com especialista</a>
+  </div>
+</section>
+
+<!-- ── MANIFESTO ── -->
+<section class="manifesto">
+  <div class="manifesto-inner">
+    <div class="manifesto-quote">
+      <div class="manifesto-aspas">&ldquo;</div>
+      <p>Acreditamos que tamanho não define potencial.<br/>Toda grande empresa já foi pequena — e as que chegaram lá tiveram as conexões certas na hora certa.</p>
+      <div class="manifesto-brand">— Raridade Hub</div>
+    </div>
+    <div class="manifesto-pillars">
+      <div class="pillar">
+        <div class="pillar-icon">◈</div>
+        <div class="pillar-text">
+          <strong>Soluções</strong>
+          <span>Estratégias digitais sob medida para o seu negócio e seu momento.</span>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">⟡</div>
+        <div class="pillar-text">
+          <strong>Conexões</strong>
+          <span>Rede de parceiros e clientes para acelerar o seu crescimento.</span>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">◎</div>
+        <div class="pillar-text">
+          <strong>Desenvolvimento</strong>
+          <span>Presença digital que gera resultado real, não só aparência.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ── PLANOS ── -->
+<section class="plans" id="planos">
+  <div class="section-tag">Planos e Preços</div>
+  <h2 class="section-title">Escolha seu pacote</h2>
+  <p class="section-sub">Cobrança semanal sem surpresas. Cancele quando quiser.</p>
+
+  <div class="plans-grid">
+
+    <!-- SIMPLES -->
+    <div class="plan-card">
+      <div class="plan-name">Simples</div>
+      <div class="plan-price">R$150 <span>/ sem</span></div>
+      <p class="plan-desc">Ideal para quem está começando e quer dar os primeiros passos no digital.</p>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Diagnóstico digital inicial</li>
+        <li>Presença nas redes sociais</li>
+        <li>1 canal de aquisição</li>
+        <li>Relatório mensal</li>
+        <li>Suporte por e-mail</li>
+      </ul>
+      <a href="checkout_standalone.html?plano=Simples" class="plan-btn plan-btn-outline">Assinar Simples</a>
+    </div>
+
+    <!-- INTERMEDIÁRIO -->
+    <div class="plan-card featured">
+      <div class="plan-badge">Mais escolhido</div>
+      <div class="plan-name">Intermediário</div>
+      <div class="plan-price">R$200 <span>/ sem</span></div>
+      <p class="plan-desc">Para empresas prontas para escalar com estratégia e mais canais de venda.</p>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Tudo do plano Simples</li>
+        <li>Estratégia de conteúdo</li>
+        <li>3 canais de aquisição</li>
+        <li>Gestão de tráfego pago</li>
+        <li>Suporte via WhatsApp</li>
+        <li>Reunião mensal de resultado</li>
+      </ul>
+      <a href="checkout_standalone.html?plano=Intermediário" class="plan-btn plan-btn-solid">Assinar Intermediário</a>
+    </div>
+
+    <!-- COMPLETO -->
+    <div class="plan-card">
+      <div class="plan-name">Completo</div>
+      <div class="plan-price">R$250 <span>/ sem</span></div>
+      <p class="plan-desc">Solução total para marcas que querem dominar o mercado digital.</p>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Tudo do plano Intermediário</li>
+        <li>Desenvolvimento web</li>
+        <li>Canais ilimitados</li>
+        <li>Consultoria estratégica</li>
+        <li>Suporte prioritário 24h</li>
+        <li>Relatórios semanais</li>
+        <li>Conexões e parcerias</li>
+      </ul>
+      <a href="checkout_standalone.html?plano=Completo" class="plan-btn plan-btn-outline">Assinar Completo</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── DIFERENCIAIS ── -->
+<section class="features-section" id="solucoes">
+  <div class="section-tag">Por que a Raridade Hub?</div>
+  <h2 class="section-title">O que nos torna diferentes</h2>
+  <p class="section-sub">Não somos só uma agência. Somos parceiros no crescimento da sua empresa.</p>
+
+  <div class="features-grid">
+    <div class="feature-item">
+      <div class="feature-icon">◈</div>
+      <div class="feature-title">Estratégia sob medida</div>
+      <p class="feature-desc">Cada empresa tem uma jornada única. Adaptamos soluções ao seu nicho e público.</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">⟡</div>
+      <div class="feature-title">Conexões reais</div>
+      <p class="feature-desc">Rede de parceiros, fornecedores e clientes para acelerar o seu crescimento.</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">◎</div>
+      <div class="feature-title">Resultado mensurável</div>
+      <p class="feature-desc">Relatórios claros com métricas que importam de verdade para o seu negócio.</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">⬡</div>
+      <div class="feature-title">Time especializado</div>
+      <p class="feature-desc">Profissionais com experiência prática em digital, vendas e desenvolvimento.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTATO ── -->
+<section class="contact-section" id="contato">
+  <div class="section-tag">Contato</div>
+  <h2 class="section-title">Fale com a gente</h2>
+  <p class="section-sub">Tire suas dúvidas, escolha seu plano ou conte sobre o seu negócio.</p>
+
+  <div class="contact-card">
+    <div class="contact-grid">
+
+      <div class="contact-info">
+        <h3>Pronto para começar?</h3>
+        <p>Estamos disponíveis para conversar sobre qual solução faz mais sentido para a sua empresa agora.</p>
+
+        <div class="contact-item">
+          <div class="contact-item-icon">📱</div>
+          <div class="contact-item-text">
+            <strong>WhatsApp</strong>
+            +55 (61) 99804-1680
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-item-icon">📍</div>
+          <div class="contact-item-text">
+            <strong>Localização</strong>
+            Brasília / DF — atendimento nacional
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-item-icon">⏱</div>
+          <div class="contact-item-text">
+            <strong>Horário</strong>
+            Seg–Sex, 9h às 18h
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-item-icon" style="display:flex;align-items:center;justify-content:center;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7dd3fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </div>
+          <div class="contact-item-text">
+            <strong>Instagram</strong>
+            <a href="https://instagram.com/raridadehub" target="_blank" style="color:var(--blue);text-decoration:none;">@raridadehub</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="wa-cta">
+        <div class="wa-icon">💬</div>
+        <h4>Iniciar conversa</h4>
+        <p>Resposta rápida via WhatsApp. Sem formulários, sem burocracia.</p>
+        <a href="https://wa.me/5561998041680?text=Olá!%20Vim%20pelo%20site%20da%20Raridade%20Hub%20e%20gostaria%20de%20saber%20mais." target="_blank" class="btn-whatsapp">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          Chamar no WhatsApp
+        </a>
+        <span class="wa-number">+55 (61) 99804-1680</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA FINAL ── -->
+<section class="cta-section">
+  <h2>Pronto para ser raro no digital?</h2>
+  <p>Fale com a gente e descubra qual plano faz mais sentido para o seu negócio.</p>
+  <a href="https://wa.me/5561998041680?text=Olá!%20Vim%20pelo%20site%20da%20Raridade%20Hub%20e%20quero%20saber%20mais." target="_blank" class="btn-primary">Entrar em contato</a>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <a href="#" class="logo">
+    <div class="logo-dot"></div>
+    Raridade Hub
+  </a>
+  <ul>
+    <li><a href="#solucoes">Soluções</a></li>
+    <li><a href="#planos">Planos</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <p>© 2025 Raridade Hub. Todos os direitos reservados.</p>
+  <a href="https://instagram.com/raridadehub" target="_blank" style="color:var(--text-muted);font-size:12px;text-decoration:none;display:flex;align-items:center;gap:5px;transition:color 0.2s;" onmouseover="this.style.color='#7dd3fc'" onmouseout="this.style.color='var(--text-muted)'">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    @raridadehub
+  </a>
+</footer>
+
+<script>
+// Adiciona classes reveal nas seções
+  document.querySelectorAll('.plans, .features-section, .contact-section, .cta-section').forEach((el, i) => {
+    el.classList.add('reveal');
+    if (i === 1) el.classList.add('reveal-delay-1');
+    if (i === 2) el.classList.add('reveal-delay-2');
+    if (i === 3) el.classList.add('reveal-delay-3');
+  });
+
+  // Scroll reveal observer
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Animar percentual da barra
+  let pct = 0;
+  const pctEl = document.getElementById('splashPct');
+  const pctInterval = setInterval(() => {
+    pct = Math.min(pct + Math.floor(Math.random() * 8) + 2, 99);
+    if (pctEl) pctEl.textContent = pct + '%';
+    if (pct >= 99) clearInterval(pctInterval);
+  }, 80);
+
+  // Splash: espera barra completar (1s delay + 1.6s fill = ~2.8s) e sai
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      if (pctEl) pctEl.textContent = '100%';
+      const splash = document.getElementById('splash');
+      splash.classList.add('hide');
+      document.body.classList.add('loaded');
+      setTimeout(() => splash.remove(), 700);
+    }, 2800);
+  });
+</script>
+</body>
+</html>
