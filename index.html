@@ -643,37 +643,231 @@ sections.forEach(s => secObs.observe(s));
 
 // ── CHATBOT ──────────────────────────────────────────
 const WA = "5561998041680";
+const WA_URL = "https://wa.me/" + WA + "?text=";
 
-const RESPOSTAS = {
-  "Quero criar um site": {
-    msg: "Ótima escolha! 🌐 Criamos sites profissionais e personalizados para o seu negócio.\n\nQuer que eu te conecte com nosso consultor agora?",
-    opts: ["Sim, quero falar com consultor", "Quero saber o processo", "Quanto custa?"]
+// ── BASE DE CONHECIMENTO ─────────────────────────────
+const KB = {
+  // Saudações
+  saudacao: {
+    patterns: ["oi","olá","ola","hey","bom dia","boa tarde","boa noite","tudo bem","tudo bom","oi tudo","hello","hi"],
+    response: "Olá! Que bom ter você aqui 😊\nSou o assistente da Raridade Hub. Posso te ajudar com informações sobre nossos serviços ou te conectar com nosso consultor.\n\nO que você está procurando hoje?",
+    opts: ["🌐 Criar um site","📱 Marketing digital","🤖 Consultoria com IA","💬 Falar com consultor"]
   },
-  "Preciso de marketing digital": {
-    msg: "Perfeito! 📱 Trabalhamos com gestão de redes sociais, tráfego pago e criação de conteúdo estratégico.\n\nQuer um diagnóstico gratuito?",
-    opts: ["Quero diagnóstico gratuito", "Quero falar com consultor", "Quero saber mais"]
+
+  // Site
+  site_geral: {
+    patterns: ["site","website","página","pagina","criar site","fazer site","quero site","preciso de site","tenho site","não tenho site"],
+    response: "Criamos sites profissionais do zero! 🌐\n\nNossos sites são rápidos, bonitos e feitos sob medida para o seu negócio — não usamos templates genéricos.\n\nO que você precisa saber?",
+    opts: ["Como é o processo?","Quanto tempo leva?","Qual o investimento?","Ver exemplos de sites","Falar com consultor"]
   },
-  "Quero saber sobre IA": {
-    msg: "Excelente! 🤖 A IA pode automatizar atendimento, analisar dados e eliminar tarefas repetitivas na sua empresa.\n\nQuer descobrir como aplicar no seu negócio?",
-    opts: ["Sim, quero saber como aplicar", "Falar com consultor", "Ver exemplos"]
+  site_processo: {
+    patterns: ["como funciona site","processo site","etapas site","como fazem","como é feito"],
+    response: "O processo de criação do seu site é simples e transparente:\n\n1️⃣ Conversa inicial — entendemos seu negócio\n2️⃣ Layout — criamos o design personalizado\n3️⃣ Desenvolvimento — construímos o site\n4️⃣ Revisões — você aprova cada detalhe\n5️⃣ Publicação — site no ar!\n\nTudo acompanhado de perto por você.",
+    opts: ["Quanto tempo leva?","Qual o investimento?","Quero começar agora"]
   },
-  "Falar com um consultor": {
-    msg: "Claro! Vou te redirecionar para o nosso consultor agora. 👋\n\nClique abaixo para abrir o WhatsApp:",
+  site_prazo: {
+    patterns: ["quanto tempo","prazo","demora","quando fica pronto","dias","semanas"],
+    response: "O prazo depende da complexidade do projeto:\n\n⚡ Site simples (landing page): 5–7 dias\n🏢 Site institucional: 10–15 dias\n🛒 Site com loja: 15–25 dias\n\nSempre trabalhamos com prazo combinado e cumprido. Sem surpresas!",
+    opts: ["Qual o investimento?","Quero começar agora","Falar com consultor"]
+  },
+  site_preco: {
+    patterns: ["preço site","preço","valor site","quanto custa site","custo site","investimento site","caro","barato","cobram","cobrar"],
+    response: "Os valores variam conforme o projeto — cada negócio tem necessidades diferentes.\n\nO que posso garantir: entregamos qualidade real a um preço justo para micro empresas 💙\n\nO melhor é conversar com nosso consultor para um orçamento sem compromisso!",
+    opts: ["Quero orçamento gratuito","Como é o pagamento?","Falar com consultor"]
+  },
+  site_pagamento: {
+    patterns: ["pagamento","parcelado","parcela","cartão","pix","à vista","forma de pagamento"],
+    response: "Trabalhamos com condições flexíveis de pagamento:\n\n💳 Cartão de crédito (parcelado)\n📱 PIX (à vista)\n🤝 Entrada + parcelas\n\nAdaptamos conforme sua realidade. Fale com nosso consultor para detalhes!",
+    opts: ["Quero orçamento gratuito","Falar com consultor"]
+  },
+
+  // Marketing
+  marketing_geral: {
+    patterns: ["marketing","divulgação","divulgacao","publicidade","propaganda","redes sociais","instagram","facebook","mídia","midia","anuncio","anúncio"],
+    response: "Marketing digital bem feito faz toda a diferença! 📱\n\nTrabalhamos com estratégias reais para atrair clientes que já estão procurando o que você vende.\n\nO que mais te interessa?",
+    opts: ["Gestão de redes sociais","Tráfego pago (anúncios)","Criação de conteúdo","Quero tudo junto","Falar com consultor"]
+  },
+  marketing_redes: {
+    patterns: ["redes sociais","gestão redes","gerenciar redes","posts","feed","stories","reels","conteúdo","conteudo"],
+    response: "Nossa gestão de redes sociais inclui:\n\n📸 Criação de posts e stories\n🎬 Roteiros para Reels\n📅 Calendário editorial mensal\n💬 Resposta a comentários\n📊 Relatório de resultados\n\nVocê foca no negócio, a gente cuida das redes!",
+    opts: ["Qual o valor?","Quero saber mais","Falar com consultor"]
+  },
+  marketing_trafego: {
+    patterns: ["tráfego","trafego","anúncios","anuncios","ads","meta ads","google ads","impulsionar","patrocinado","pago"],
+    response: "Com tráfego pago bem gerenciado, cada real investido traz retorno real! 🎯\n\nGerenciamos campanhas no:\n📘 Meta Ads (Facebook e Instagram)\n🔍 Google Ads\n\nDefinimos o público certo, criamos os anúncios e otimizamos semana a semana.",
+    opts: ["Quanto preciso investir?","Como funciona?","Falar com consultor"]
+  },
+  marketing_investimento: {
+    patterns: ["quanto investir","verba","budget","orçamento anúncio","quanto gastar","valor anuncio"],
+    response: "Recomendamos começar com:\n\n📌 Mínimo R$300–R$500/mês em verba de anúncios\n📌 + nossa taxa de gestão\n\nO valor ideal depende do seu objetivo e mercado. Com uma conversa rápida, a gente te indica o caminho certo!",
+    opts: ["Quero conversar","Falar com consultor"]
+  },
+
+  // IA
+  ia_geral: {
+    patterns: ["ia","inteligência artificial","inteligencia artificial","automação","automacao","chatbot","robô","robo","tecnologia","automatizar","automatico"],
+    response: "A IA chegou para ficar — e as micro empresas que adotarem agora saem na frente! 🤖\n\nNa Raridade Hub implementamos IA de forma prática, sem complicação técnica.\n\nO que você quer saber?",
+    opts: ["O que a IA pode fazer?","Chatbot para meu negócio","Automação de processos","Análise de dados","Quanto custa?","Falar com consultor"]
+  },
+  ia_oque: {
+    patterns: ["o que ia faz","o que a ia","como ia ajuda","benefícios ia","vantagens ia","pra que serve"],
+    response: "A IA pode transformar várias áreas do seu negócio:\n\n💬 Atendimento 24h com chatbot inteligente\n⚙️ Automação de respostas e processos repetitivos\n📊 Análise de dados e relatórios automáticos\n📧 E-mails e mensagens personalizadas em escala\n🔍 Pesquisa de mercado e concorrência\n\nTudo isso economizando tempo e dinheiro!",
+    opts: ["Chatbot para meu negócio","Automação de processos","Quanto custa?","Falar com consultor"]
+  },
+  ia_chatbot: {
+    patterns: ["chatbot","chat bot","atendimento automático","atendimento automatico","bot whatsapp","bot site","assistente virtual"],
+    response: "Um chatbot inteligente para sua empresa pode:\n\n✅ Atender clientes 24h por dia, 7 dias por semana\n✅ Responder dúvidas frequentes automaticamente\n✅ Qualificar leads antes de chegar pra você\n✅ Integrar com WhatsApp e seu site\n✅ Economizar horas de atendimento manual\n\nDá para configurar para qualquer tipo de negócio!",
+    opts: ["Quero um chatbot","Quanto custa?","Falar com consultor"]
+  },
+  ia_automacao: {
+    patterns: ["automação","automacao","automatizar","processo automático","processo automatico","fluxo","workflow"],
+    response: "Automatizamos processos que tomam seu tempo todo dia:\n\n⏰ Envio automático de mensagens e lembretes\n📋 Geração de relatórios automáticos\n📧 Follow-up com clientes automatizado\n🔄 Integração entre sistemas e ferramentas\n\nVocê trabalha no que importa. A máquina cuida do resto!",
+    opts: ["Quero automatizar meu negócio","Quanto custa?","Falar com consultor"]
+  },
+  ia_dados: {
+    patterns: ["dados","relatório","relatorio","análise","analise","métricas","metricas","resultado","números","numeros","planilha"],
+    response: "Com análise de dados com IA você consegue:\n\n📈 Entender quais produtos/serviços vendem mais\n👥 Conhecer melhor o perfil dos seus clientes\n📉 Identificar onde está perdendo dinheiro\n🔮 Antecipar tendências do seu mercado\n\nTudo apresentado de forma simples e visual!",
+    opts: ["Quero análise de dados","Falar com consultor"]
+  },
+
+  // Consultoria
+  consultoria_geral: {
+    patterns: ["consultoria","consultor","diagnóstico","diagnostico","ajuda","orientação","orientacao","conselho","análise negócio"],
+    response: "Nossa consultoria é personalizada para a realidade da sua micro empresa 🎯\n\nNão damos receitas prontas — sentamos com você, entendemos o seu negócio e montamos um plano que faz sentido para a sua situação.\n\nO que você precisa?",
+    opts: ["Diagnóstico gratuito","Como funciona a consultoria?","Áreas de atuação","Falar com consultor"]
+  },
+  consultoria_gratis: {
+    patterns: ["grátis","gratuito","gratis","de graça","sem custo","primeira consulta","conversa inicial"],
+    response: "Sim! 🎉 Oferecemos uma conversa inicial gratuita e sem compromisso.\n\nNessa primeira conversa:\n✅ Entendemos o seu negócio\n✅ Identificamos os principais desafios\n✅ Indicamos o melhor caminho\n✅ Apresentamos uma proposta personalizada\n\nSem enrolação, direto ao ponto!",
+    opts: ["Quero minha consultoria gratuita","Falar com consultor"]
+  },
+
+  // Preço geral
+  preco_geral: {
+    patterns: ["preço","preco","valor","quanto","custa","investimento","orçamento","orcamento","cobram","cobrar","caro","barato"],
+    response: "Trabalhamos com preços justos para micro empresas — sem cobrar preço de grande agência! 💙\n\nOs valores variam conforme o serviço e escopo. O melhor é uma conversa rápida para montar uma proposta do tamanho certo para você.\n\nQuer um orçamento gratuito?",
+    opts: ["Quero orçamento gratuito","Falar com consultor","Saber sobre sites","Saber sobre marketing"]
+  },
+
+  // Localização
+  localizacao: {
+    patterns: ["onde","localização","localizacao","endereço","endereco","palmas","tocantins","presencial","online","remoto"],
+    response: "Estamos sediados em Palmas, Tocantins 📍\n\nMas atendemos empresas de todo o Brasil de forma 100% online — sem perder nada na qualidade!\n\nVideo chamadas, WhatsApp e e-mail. Simples assim.",
+    opts: ["Falar com consultor","Agendar uma conversa"]
+  },
+
+  // Contato
+  contato: {
+    patterns: ["contato","falar","conversar","whatsapp","ligar","telefone","email","e-mail","chamar","agendar"],
+    response: "Quer falar com a gente? 😊\n\nEstamos disponíveis por:\n📱 WhatsApp: +55 (61) 99804-1680\n📸 Instagram: @raridadehub\n⏰ Seg–Sex, 9h às 18h\n\nClique abaixo para abrir o WhatsApp agora!",
+    opts: ["Abrir WhatsApp →","Ver Instagram"]
+  },
+
+  // Sobre a empresa
+  sobre: {
+    patterns: ["quem são","quem sao","sobre vocês","sobre voces","empresa","raridade hub","historia","história","fundação","fundacao","quando criaram"],
+    response: "A Raridade Hub nasceu em Palmas-TO com uma missão: levar o digital de qualidade para micro empresas que merecem crescer! 🚀\n\nAcreditamos que tamanho não define potencial — e que toda micro empresa pode ter uma presença digital profissional.\n\nSomos especialistas em sites, marketing digital e inteligência artificial.",
+    opts: ["Ver nossos serviços","Falar com consultor"]
+  },
+
+  // Diferenciais
+  diferencial: {
+    patterns: ["diferencial","diferente","por que","porque escolher","vantagem","melhor","qualidade","confiança","confianca","garantia"],
+    response: "O que nos diferencia:\n\n🎯 Atendimento personalizado — não somos uma fábrica de sites\n🤝 Parceria real — acompanhamos seu crescimento\n💡 IA integrada — usamos tecnologia de ponta\n📊 Resultado mensurável — métricas claras\n💙 Foco em micro empresas — entendemos sua realidade\n\nNão vendemos pacotes prontos. Construímos junto com você.",
+    opts: ["Quero saber mais","Falar com consultor"]
+  },
+
+  // Prazo / urgência
+  urgencia: {
+    patterns: ["urgente","rápido","rapido","urgência","urgencia","preciso logo","para ontem","preciso agora","preciso já"],
+    response: "Entendemos a urgência! ⚡\n\nPara casos urgentes, priorizamos o atendimento. Manda uma mensagem agora no WhatsApp com 'URGENTE' e a gente responde o mais rápido possível!",
     opts: ["Abrir WhatsApp →"]
   },
-  "Sim, quero falar com consultor": { msg: "Perfeito! Clique abaixo para falar com a gente 👇", opts: ["Abrir WhatsApp →"] },
-  "Quero diagnóstico gratuito": { msg: "Ótimo! Manda uma mensagem e a gente agenda seu diagnóstico gratuito 🎯", opts: ["Abrir WhatsApp →"] },
-  "Sim, quero saber como aplicar": { msg: "Maravilha! Vou te conectar com nosso especialista em IA 🤖", opts: ["Abrir WhatsApp →"] },
-  "Abrir WhatsApp →": { msg: "", wa: true },
-  "Quanto custa?": { msg: "Os valores variam conforme o projeto. O melhor é conversar direto com nosso consultor para um orçamento personalizado 😊", opts: ["Falar com consultor", "Abrir WhatsApp →"] },
-  "Quero saber o processo": { msg: "Nosso processo é simples: 1️⃣ Conversa inicial → 2️⃣ Diagnóstico → 3️⃣ Proposta → 4️⃣ Execução.\n\nQuer começar?", opts: ["Quero começar", "Abrir WhatsApp →"] },
-  "Quero saber mais": { msg: "Posso te contar tudo! O melhor é uma conversa rápida com nosso consultor para entender seu caso específico 😊", opts: ["Abrir WhatsApp →"] },
-  "Ver exemplos": { msg: "Nossos cases são apresentados diretamente na consultoria, personalizado para o seu setor. Quer agendar uma conversa?", opts: ["Abrir WhatsApp →"] },
-  "Falar com consultor": { msg: "Claro! Clique abaixo 👇", opts: ["Abrir WhatsApp →"] },
-  "Quero começar": { msg: "Que ótimo! 🚀 Vou te levar para o WhatsApp agora.", opts: ["Abrir WhatsApp →"] },
+
+  // Dúvidas gerais
+  duvida: {
+    patterns: ["dúvida","duvida","pergunta","não entendi","não sei","como funciona","me explica","explica"],
+    response: "Pode perguntar à vontade! Estou aqui para ajudar 😊\n\nOu se preferir, nosso consultor pode te explicar tudo em uma conversa rápida pelo WhatsApp — às vezes é mais fácil assim!",
+    opts: ["Falar com consultor","Abrir WhatsApp →"]
+  },
+
+  // Agradecimento
+  obrigado: {
+    patterns: ["obrigado","obrigada","valeu","thanks","grato","grata","muito obrigado"],
+    response: "Fico feliz em ajudar! 😊\n\nQualquer dúvida estou por aqui. E lembre-se: nossa equipe no WhatsApp também está sempre disponível para uma conversa mais aprofundada!\n\nFoi um prazer 💙",
+    opts: ["Falar com consultor","Abrir WhatsApp →"]
+  },
+
+  // Despedida
+  tchau: {
+    patterns: ["tchau","até mais","ate mais","até logo","ate logo","bye","adeus","até","flw","falou"],
+    response: "Até mais! 👋 Foi um prazer conversar com você.\n\nSe precisar de alguma coisa, estaremos aqui — ou no WhatsApp. Sucesso no seu negócio! 🚀",
+    opts: ["Abrir WhatsApp →"]
+  }
 };
 
+// ── AÇÕES ESPECIAIS ───────────────────────────────────
+const ACOES = {
+  "Abrir WhatsApp →":          () => window.open(WA_URL + encodeURIComponent("Olá! Vim pelo site da Raridade Hub e gostaria de uma consultoria."), "_blank"),
+  "Ver Instagram":             () => window.open("https://instagram.com/raridadehub", "_blank"),
+  "Quero minha consultoria gratuita": () => window.open(WA_URL + encodeURIComponent("Olá! Quero minha consultoria gratuita com a Raridade Hub."), "_blank"),
+  "Quero orçamento gratuito":  () => window.open(WA_URL + encodeURIComponent("Olá! Quero um orçamento gratuito da Raridade Hub."), "_blank"),
+  "Agendar uma conversa":      () => window.open(WA_URL + encodeURIComponent("Olá! Quero agendar uma conversa com a Raridade Hub."), "_blank"),
+  "Quero começar agora":       () => window.open(WA_URL + encodeURIComponent("Olá! Quero começar meu projeto com a Raridade Hub."), "_blank"),
+  "Quero um chatbot":          () => window.open(WA_URL + encodeURIComponent("Olá! Tenho interesse em um chatbot com IA para meu negócio."), "_blank"),
+  "Quero automatizar meu negócio": () => window.open(WA_URL + encodeURIComponent("Olá! Quero automatizar processos na minha empresa com IA."), "_blank"),
+  "Quero análise de dados":    () => window.open(WA_URL + encodeURIComponent("Olá! Tenho interesse em análise de dados com IA para minha empresa."), "_blank"),
+};
+
+// Menus de navegação de serviços
+const MENUS = {
+  "🌐 Criar um site":          "site_geral",
+  "📱 Marketing digital":      "marketing_geral",
+  "🤖 Consultoria com IA":     "ia_geral",
+  "💬 Falar com consultor":    "contato",
+  "Gestão de redes sociais":   "marketing_redes",
+  "Tráfego pago (anúncios)":   "marketing_trafego",
+  "Criação de conteúdo":       "marketing_redes",
+  "Quero tudo junto":          "consultoria_geral",
+  "Como é o processo?":        "site_processo",
+  "Quanto tempo leva?":        "site_prazo",
+  "Qual o investimento?":      "site_preco",
+  "Ver exemplos de sites":     "site_preco",
+  "Como é o pagamento?":       "site_pagamento",
+  "O que a IA pode fazer?":    "ia_oque",
+  "Chatbot para meu negócio":  "ia_chatbot",
+  "Automação de processos":    "ia_automacao",
+  "Análise de dados":          "ia_dados",
+  "Quanto custa?":             "preco_geral",
+  "Diagnóstico gratuito":      "consultoria_gratis",
+  "Como funciona a consultoria?": "consultoria_geral",
+  "Áreas de atuação":          "sobre",
+  "Quanto investir?":          "marketing_investimento",
+  "Quanto preciso investir?":  "marketing_investimento",
+  "Como funciona?":            "site_processo",
+  "Quero conversar":           "contato",
+  "Saber sobre sites":         "site_geral",
+  "Saber sobre marketing":     "marketing_geral",
+  "Ver nossos serviços":       "site_geral",
+  "Falar com consultor":       "contato",
+  "Quero saber mais":          "diferencial",
+  "Quero começar":             "contato",
+};
+
+// ── NLP BÁSICO ───────────────────────────────────────
+function detectarIntencao(msg) {
+  const lower = msg.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  for (const [key, item] of Object.entries(KB)) {
+    if (item.patterns.some(p => lower.includes(p.normalize("NFD").replace(/[\u0300-\u036f]/g,"")))) {
+      return item;
+    }
+  }
+  return null;
+}
+
+// ── ESTADO DO CHAT ───────────────────────────────────
 let chatOpen = false;
+let msgCount = 0;
 
 function toggleChat() {
   chatOpen = !chatOpen;
@@ -681,58 +875,65 @@ function toggleChat() {
   if (chatOpen) document.getElementById("chatBadge").style.display = "none";
 }
 
-function addMsg(text, type, delay = 0) {
+function addMsg(text, type) {
   return new Promise(res => {
-    setTimeout(() => {
-      const msgs = document.getElementById("chatMessages");
-      if (type === "typing") {
-        const t = document.createElement("div");
-        t.className = "chat-typing-wrap"; t.id = "typing";
-        t.innerHTML = "<span></span><span></span><span></span>";
-        msgs.appendChild(t);
-        msgs.scrollTop = msgs.scrollHeight;
-        res(t);
-        return;
-      }
-      const el = document.createElement("div");
-      el.className = "chat-msg " + type;
-      el.innerHTML = text.replace(/\n/g, "<br/>");
-      msgs.appendChild(el);
-      msgs.scrollTop = msgs.scrollHeight;
-      res(el);
-    }, delay);
+    const msgs = document.getElementById("chatMessages");
+    if (type === "typing") {
+      const t = document.createElement("div");
+      t.className = "chat-typing-wrap"; t.id = "typing-" + Date.now();
+      t.innerHTML = "<span></span><span></span><span></span>";
+      msgs.appendChild(t); msgs.scrollTop = msgs.scrollHeight;
+      res(t); return;
+    }
+    const el = document.createElement("div");
+    el.className = "chat-msg " + type;
+    el.innerHTML = text.replace(/\n/g,"<br/>");
+    msgs.appendChild(el); msgs.scrollTop = msgs.scrollHeight;
+    res(el);
   });
 }
 
-async function chatOption(opt) {
-  document.getElementById("chatOptions")?.remove();
-  await addMsg(opt, "user");
-
-  const resp = RESPOSTAS[opt];
-  if (!resp) { await botRespond("Entendido! Quer falar com nosso consultor?", ["Abrir WhatsApp →"]); return; }
-  if (resp.wa) { window.open("https://wa.me/" + WA + "?text=Olá!%20Vim%20pelo%20site%20da%20Raridade%20Hub%20e%20quero%20uma%20consultoria.", "_blank"); return; }
-
-  const typing = await addMsg("", "typing");
-  await new Promise(r => setTimeout(r, 1000));
-  typing.remove();
-  await botRespond(resp.msg, resp.opts);
+function addOptions(opts) {
+  const msgs = document.getElementById("chatMessages");
+  const wrap = document.createElement("div");
+  wrap.className = "chat-options";
+  opts.forEach(o => {
+    const btn = document.createElement("button");
+    btn.className = "chat-opt"; btn.textContent = o;
+    btn.onclick = () => chatOption(o);
+    wrap.appendChild(btn);
+  });
+  msgs.appendChild(wrap);
+  msgs.scrollTop = msgs.scrollHeight;
 }
 
-async function botRespond(msg, opts) {
-  await addMsg(msg, "bot");
-  if (opts && opts.length) {
-    const msgs = document.getElementById("chatMessages");
-    const wrap = document.createElement("div");
-    wrap.className = "chat-options";
-    opts.forEach(o => {
-      const btn = document.createElement("button");
-      btn.className = "chat-opt"; btn.textContent = o;
-      btn.onclick = () => chatOption(o);
-      wrap.appendChild(btn);
-    });
-    msgs.appendChild(wrap);
-    msgs.scrollTop = msgs.scrollHeight;
+async function botRespond(msg, opts, delay = 900) {
+  const typing = await addMsg("", "typing");
+  await new Promise(r => setTimeout(r, delay));
+  typing.remove();
+  if (msg) await addMsg(msg, "bot");
+  if (opts && opts.length) addOptions(opts);
+}
+
+async function chatOption(opt) {
+  // Remove opções anteriores
+  document.querySelectorAll(".chat-options").forEach(el => el.remove());
+  await addMsg(opt, "user");
+
+  // Ação especial (abre link externo)
+  if (ACOES[opt]) { ACOES[opt](); return; }
+
+  // Menu de navegação para um tópico do KB
+  if (MENUS[opt]) {
+    const item = KB[MENUS[opt]];
+    if (item) { await botRespond(item.response, item.opts); return; }
   }
+
+  // Fallback
+  await botRespond(
+    "Entendido! Para te ajudar melhor com isso, nosso consultor é a pessoa certa 😊\nClique abaixo para falar direto com ele no WhatsApp!",
+    ["Abrir WhatsApp →"]
+  );
 }
 
 async function sendChat() {
@@ -740,13 +941,36 @@ async function sendChat() {
   const msg = input.value.trim();
   if (!msg) return;
   input.value = "";
-  document.getElementById("chatOptions")?.remove();
+  document.querySelectorAll(".chat-options").forEach(el => el.remove());
   await addMsg(msg, "user");
-  const typing = await addMsg("", "typing");
-  await new Promise(r => setTimeout(r, 1000));
-  typing.remove();
-  await botRespond("Entendido! Para te ajudar melhor, nosso consultor vai adorar conversar com você pessoalmente. 😊", ["Abrir WhatsApp →"]);
+  msgCount++;
+
+  // Detectar intenção pela mensagem digitada
+  const intencao = detectarIntencao(msg);
+  if (intencao) {
+    await botRespond(intencao.response, intencao.opts);
+    return;
+  }
+
+  // Fallback inteligente
+  if (msgCount >= 3) {
+    await botRespond(
+      "Vejo que você tem bastante dúvidas — e faz sentido! 😊\nO melhor mesmo é uma conversa rápida com nosso consultor para tirar tudo de letra.\n\nQuer abrir o WhatsApp agora?",
+      ["Abrir WhatsApp →","Não, continuar aqui"]
+    );
+    return;
+  }
+
+  await botRespond(
+    "Hmm, deixa eu ver se entendi bem o que você precisa 🤔\n\nPode me dizer mais sobre o que está buscando? Ou escolha uma das opções:",
+    ["🌐 Criar um site","📱 Marketing digital","🤖 Consultoria com IA","💬 Falar com consultor","💰 Saber valores"]
+  );
 }
-</script>
+
+// Tecla Enter
+document.addEventListener("DOMContentLoaded", () => {
+  const inp = document.getElementById("chatInput");
+  if (inp) inp.addEventListener("keydown", e => { if (e.key === "Enter") sendChat(); });
+});</script>
 </body>
 </html>
